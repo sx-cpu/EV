@@ -390,7 +390,7 @@ class poisson_process:
         elif len(selector) == 1:
             # 如果只有一个匹配的索引，正常提取模型
             M_topop = Model[int(selector[0])]
-        else:
+        else:# 
             # 如果有多个匹配的索引，可根据需求选择处理方式，这里取第一个索引
             print("Warning: Multiple matches found for f1. Using the first match.")
             M_topop = Model[int(selector[0])]

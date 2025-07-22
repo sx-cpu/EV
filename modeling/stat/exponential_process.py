@@ -115,9 +115,11 @@ class exponential_process:
             day = days[(fac1 == f1)]
             model_d = []
             for day_i in np.unique(day):
+                # print("day_i", day_i)
 
                 model_d_temp = []
                 for t_i in np.unique(x):
+                    # print("t_i", t_i)
                     try:
                         model_d_temp.append([[t_i, expon.fit(pd.to_numeric(d[(x == t_i) & (day == day_i)]))[1], day_i]])
                         # 选出来对应某一个Daytype(d)(12 * 2)的DOY(day_i)内的一个slot(t_i)(24小时内的一个slot)，
@@ -126,7 +128,18 @@ class exponential_process:
                     except:
                         continue
                 model_d_temp = np.vstack(model_d_temp)
+                # print(" model_d_temp: ", model_d_temp)
+                if combine[0] not in model_d_temp[:, 0]:
+                    print("day_i", day_i, "combine[0]", combine[0],"model_d_temp:",model_d_temp[:, 0])
+                    # day_i 104 combine[0] 1 model_d_temp: [ 7.  8.  9. 10. 11. 12. 13. 14. 15. 16. 17. 18. 19. 20. 21. 22. 23. 24.]
+                    # day 104 : 1 is not in model_d_temp[:, 0]
+                    continue
+                  
+                
                 scale_val = model_d_temp[(model_d_temp[:, 0] == combine[0])].flatten()[1]
+                
+                # print("conbine", combine)
+                # print("scale_value", scale_val)
                 add = [[i, scale_val, day_i] for i in combine[1:]]
                 model_d_temp = np.concatenate((model_d_temp, add))
                 model_d.append(model_d_temp)
@@ -284,10 +297,13 @@ class exponential_process:
         days = fin_d[self.x_names[2]].copy()
         self.ts_diff = model_data
         fac1 = fin_d[self.x_names[0]]
-        fac2 = fin_d['Start_time_internal'] # usually timeslot
+        fac2 = fin_d['Start_time_internal'] # usual timeslot
         orignal_start_slot = fin_d[self.x_names[1]]
         fit = []
         # model for mean values in each slot and fac
+        # print("fac1:", fac1, "fac2:",fac2)
+        # fac1: m * daytype
+        # fac2: train_data(time_interval)
 
         for f1 in np.unique(fac1):
             if verbose > 1: print(' \t\t Fitting parameters for factor : ', str(f1))
