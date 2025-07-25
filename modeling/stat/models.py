@@ -17,7 +17,7 @@ from scipy.special import digamma
 
 
 import pandas as pd
-from sklearn.metrics.scorer import make_scorer
+from sklearn.metrics import make_scorer
 
 def cude_error(y_true, y_pred):
     # sum_cube_abs = np.mean(np.exp(np.abs(y_true - y_pred)))

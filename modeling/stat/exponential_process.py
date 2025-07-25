@@ -64,8 +64,12 @@ class exponential_process:
         self._scale_multiplier = 1
 
     def avg_scale_pred(self,year,poles):
-        return self.scale_multiplier_predictor.predict(np.array([year,
-                                                              np.array(self.poles_fun([poles]))]).reshape(1, -1))
+        pole_features = self.poles_fun([poles]).values.flatten()
+        features = np.array([year] + list(pole_features)).reshape(1, -1)
+        return self.scale_multiplier_predictor.predict(features)
+
+        # return self.scale_multiplier_predictor.predict(np.array([year,
+        #                                                       np.array(self.poles_fun([poles]))]).reshape(1, -1))
 
     def get_processed_data(self):
         diff_col_name = 'Aarrival_diff'
@@ -75,7 +79,7 @@ class exponential_process:
             (np.array(diff_col_name).reshape(-1, 1), np.array(self.x_names).reshape(-1, 1)), axis=0).flatten()
         fin_d[diff_col_name] = pd.to_numeric(fin_d[diff_col_name])
         # split the values in the factor that was provided to us
-        split = fin_d[self.x_names[0]].str.split("_", -1)
+        split = fin_d[self.x_names[0]].str.split("_", n=-1)
         n = []
         for i in range(0, len(split[0])):
             fin_d['f' + str(i)] = split.str.get(i)#.astype(float)       # update this if code breaks
@@ -303,7 +307,7 @@ class exponential_process:
         # model for mean values in each slot and fac
         # print("fac1:", fac1, "fac2:",fac2)
         # fac1: m * daytype
-        # fac2: train_data(time_interval)
+        
 
         for f1 in np.unique(fac1):
             if verbose > 1: print(' \t\t Fitting parameters for factor : ', str(f1))
