@@ -179,7 +179,7 @@ class mixture_models:
             (np.array('y').reshape(-1, 1), np.array(self.x_names).reshape(-1, 1)), axis=0).flatten()
         fin_d['y'] = pd.to_numeric(fin_d['y'])
         # split the values in the factor that was provided to us
-        split = fin_d[self.x_names[0]].str.split("_", -1)
+        split = fin_d[self.x_names[0]].str.split("_", n=-1)
         n = []
         for i in range(0, len(split[0])):
             fin_d['f' + str(i)] = split.str.get(i)#.astype(float)       # update this if code breaks
@@ -264,6 +264,10 @@ class mixture_models:
             n_clust = self._n_mix
             means = (np.ones(self._n_mix)*0.5).reshape(-1, 1)
             std = (np.ones(self._n_mix)*0.05).flatten()
+
+        epsilon = 1e-8
+        std[std == 0] = epsilon
+
         precisions = std ** (-2)
         X = np.array(data['y'])
         if log:

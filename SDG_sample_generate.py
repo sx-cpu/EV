@@ -17,20 +17,15 @@ import os
 import pickle
 import datetime
 import argparse
-# load the config file
+# load the config file-
 import json
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(script_dir, 'config.json')
 
 
-# try:
-#     with open(config_path, 'r') as f:
-#         config = json.load(f)
-# except FileNotFoundError:
-#     print(f"Configuration file not found at {config_path}. Please ensure it exists.")
-#     exit(1)
-config = json.load(open('config.json'))  #这样就找不到文件了
+
+config = json.load(open('config.json'))  
 
 def main(args):
     # here we can specify the horizon for data generation
@@ -98,11 +93,11 @@ if __name__ == '__main__':
                         help='Which kind of models to use.  \n'
                              '\t\t "default" for using the default models \n'
                              '\t\t "latest" for using the lastest trained models')
-    parser.add_argument('-model', default='AC',
+    parser.add_argument('-model', default='IAT',
                         help='Modeling method to be used for modeling arrival times: \n'
                              '\t\t AC for arrival count models \n'
                              '\t\t IAT for inter-arrival time models')
-    parser.add_argument('-lambdamod', default='poisson_fit',
+    parser.add_argument('-lambdamod', default='mean',
                         help='Method to be used for modeling lambda:\n'
                              '\t\t AC: has two options, poisson_fit/neg_bio_reg \n'
                              '\t\t IAT: has three options, mean/loess/poly')

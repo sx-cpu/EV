@@ -167,12 +167,12 @@ class exponential_process:
 
     def mean_model(self,data,x,data_save,x_save):
 
-        ks_t_D = pd.DataFrame()
-        ks_t_pval = pd.DataFrame()
-        t_t_pval = pd.DataFrame()
-        exp_loc = pd.DataFrame()
-        exp_scale = pd.DataFrame()
-        time_slot = pd.DataFrame()
+        ks_t_D = []
+        ks_t_pval = []
+        t_t_pval = []
+        exp_loc = []
+        exp_scale = []
+        time_slot = []
 
         for f2 in np.unique(x):
             d = pd.to_numeric(np.array(data[(x==f2)]))
@@ -187,33 +187,37 @@ class exponential_process:
             # if we have combined data then add same model to all combined timeslots
             if self.combined_slots and f2 == self.combine[0]:
                 for var in self.combine:
-                    exp_loc = exp_loc.append(pd.DataFrame([loc]))
-                    exp_scale = exp_scale.append(pd.DataFrame([scale]))
-                    ks_t_D = ks_t_D.append(pd.DataFrame([D]))
-                    ks_t_pval = ks_t_pval.append(pd.DataFrame([kspval]))
-                    t_t_pval = t_t_pval.append(pd.DataFrame([pval / 2]))
+                    exp_loc.append(loc)
+                    exp_scale.append(scale)
+                    ks_t_D.append(D)
+                    ks_t_pval.append(kspval)
+                    t_t_pval.append(pval / 2)
                     # add timeslot
-                    time_slot = time_slot.append([var])
+                    time_slot.append(var)
 
             else:
-                exp_loc = exp_loc.append(pd.DataFrame([loc]))
-                exp_scale = exp_scale.append(pd.DataFrame([scale]))
-                ks_t_D = ks_t_D.append(pd.DataFrame([D]))
-                ks_t_pval = ks_t_pval.append(pd.DataFrame([kspval]))
-                t_t_pval = t_t_pval.append(pd.DataFrame([pval / 2]))
+                exp_loc.append(loc)
+                exp_scale.append(scale)
+                ks_t_D.append(D)
+                ks_t_pval.append(kspval)
+                t_t_pval.append(pval / 2)
                 # add timeslot
-                time_slot = time_slot.append([f2])
+                time_slot.append(f2)
 
 
         # this is the final fit
-        fit = pd.DataFrame()
-        fit[[self.x_names[1]]] = time_slot
-        fit['Exp_loc'] = np.array(exp_loc).flatten()
-        fit['Exp_scale'] = np.array(exp_scale).flatten()
-        fit['KS_D'] = np.array(ks_t_D).flatten()
-        fit['KS_PVal'] = np.array(ks_t_pval).flatten()
-        fit['Ttest_PVal'] = np.array(t_t_pval).flatten()
+        fit = pd.DataFrame({
+            self.x_names[1]: time_slot,
+            'Exp_loc': exp_loc,
+            'Exp_scale': exp_scale,
+            'KS_D': ks_t_D,
+            'KS_PVal': ks_t_pval,
+            'Ttest_PVal': t_t_pval
+        })
 
+
+
+     
         # if self._log:
         #     data_save = np.log(data_save)
         # if self._normal:

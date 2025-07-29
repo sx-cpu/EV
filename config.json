@@ -16,7 +16,7 @@
         "generated_samples_name": "res/generated_samples"
     },
     "models": {
-        "loc": "modeling\\default_models\\saved_models",
+        "loc": "modeling/default_models/saved_models",
         "ACpoisson_fit": "SDG Model (AC,poisson_fit)",
         "AVneg_bio_reg": "SDG Model (AC,neg_bio_reg)",
         "IATloess": "SDG Model (IAT,poly)",
