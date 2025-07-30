@@ -57,7 +57,7 @@ def main(args):
     # the years go as a list because we create clusters based on years. each year has seperate cluster files
     # if we put force = True for import_data, it will create the cluster files even if they are not present.
     # force = false, only works when clusterd files are already present for the given year
-    # generate processed data
+    # generate processed data 
     MMc = get_trained_model(model="MMc")
     MMe = get_trained_model(model="MMe")
 

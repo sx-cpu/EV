@@ -57,7 +57,8 @@ def generate_sample(AM,MMc,MMe,horizon_start,horizon_end):
         ts = np.concatenate((np.repeat(dates[i].date(),arrivals.size).reshape(-1,1) ,arrivals,deps,energy_req) , axis=1).reshape(-1, 4)  # this is the number of predicted day
         predicted_days = ts
         predicted_days = pd.DataFrame(np.vstack(predicted_days))
-        all_pred = all_pred.append(predicted_days)
+        # all_pred = all_pred.append(predicted_days)
+        all_pred = pd.concat([all_pred, predicted_days], ignore_index=True)
         # t_next is the next days value
         start = t_next - 24
     # add model parameters

@@ -308,9 +308,7 @@ class exponential_process:
         fac2 = fin_d['Start_time_internal'] # usual timeslot
         orignal_start_slot = fin_d[self.x_names[1]]
         fit = []
-        # model for mean values in each slot and fac
-        # print("fac1:", fac1, "fac2:",fac2)
-        # fac1: m * daytype
+        
         
 
         for f1 in np.unique(fac1):
